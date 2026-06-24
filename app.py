@@ -109,7 +109,7 @@ for kind, text in st.session_state.pending:
         st.success(text)
     elif kind == "error":
         st.error(text)
-st.session_stat
+st.session_state.pending = []
 
 if new_game:
     st.session_state.attempts = 0

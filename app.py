@@ -98,6 +98,23 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+# FIX: Initialize message queue and balloon flag it can run/read them later without crashing.
+if "pending" not in st.session_state:
+    st.session_state.pending = []
+
+if "celebrate" not in st.session_state:
+    st.session_state.celebrate = False
+
+# FIX: Changing difficulty starts a fresh game session (new number, score, etc)
+if "difficulty" not in st.session_state:
+    st.session_state.difficulty = difficulty
+elif st.session_state.difficulty != difficulty:
+    st.session_state.difficulty = difficulty
+    st.session_state.secret = random.randint(low, high)
+    st.session_state.attempts = 0
+    st.session_state.score = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
 st.subheader("Make a guess")
 
 # FIX: Shows proper range of numbers depending on the selected difficulty

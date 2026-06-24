@@ -25,29 +25,49 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [X] Describe the game's purpose.
+   - This is a simple guessing number game from 1 to X that varies by difficulty. Players attempts would also varry depending on difficulty, but there will always be a given hint depending on what our guess is to help us out.
+- [X] Detail which bugs you found.
+
+   - The hints were backwards (Shows go lower then the number was higher & vise-versa)
+   - The secret number never updated when you changed difficulty, so a leftover number could fall outside the new range (e.g. 75 while on Easy's 1–20), making the game unwinnable.
+   - Changing difficulty kept your old attempts/score instead of starting a fresh game, giving you extra tries on the same number.
+   - Winning on the first guess scored 80 instead of 90 because of an off-by-one in the points formula.
+   - A "Too High" guess on an even attempt ADDED points, so a wrong guess could raise your score.
+   - Easy difficulty originally gave us 6 tries instead of 10
+- [X] Explain what fixes you applied.
+   - Hints are displayed more accuaretly
+   - Changing difficulties starts a new game instead of allowing users to get new tries
+   - Removed the extra `+ 1` from the win-points formula so a first-guess win scores 90.
+   - Made wrong guesses penalize consistently (both "Too High" and "Too Low" subtract 5), removing the even-attempt bonus.
+   - Adjusted attempt accounts for each difficulty
+   - Balloons properly displayed when winning
+   - Refactored the game logic into `logic_utils.py` so it can be unit-tested with pytest.
 
 ## 📸 Demo Walkthrough
 
 Describe your fixed game in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. User enters a random number as theri guess (Ex: 50)
+2. Game returns a hint saying "Too Low" or "Too High"
+3. User enters another guess with help of the hint
+4. Score updates correctly after each guess
+5. Game ends after user runs out of attempts or they guessed the correct secret number
 
 **Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
 
 ## 🧪 Test Results
 
 ```
-# Paste your pytest output here, e.g.:
-# pytest tests/
-# ========================= X passed in 0.XXs =========================
+$ python -m pytest -q
+...                                                                      [100%]
+3 passed in 0.01s
 ```
+
+All three logic tests pass after refactoring the game logic into `logic_utils.py`:
+- `test_winning_guess` — equal guess/secret returns "Win"
+- `test_guess_too_high` — guess above secret returns "Too High"
+- `test_guess_too_low` — guess below secret returns "Too Low"
 
 ## 🚀 Stretch Features
 
